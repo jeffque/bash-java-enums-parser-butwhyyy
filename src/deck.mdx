@@ -1,6 +1,9 @@
 import { Head, Image, Appear } from 'mdx-deck';
 
+import titleString from './Constants'
 import Code from './Code';
+import JavaGram from './JavaGram';
+import JavaPDA from './JavaPDA';
 import Intro from './Intro';
 import Website from './Website';
 
@@ -15,107 +18,611 @@ export * as components from './components';
     rel="stylesheet"
   />
   <link href="https://fonts.cdnfonts.com/css/cascadia-code" rel="stylesheet" />
-  <title>Introduction to Type-Level programming in TypeScript</title>
+  <title>{titleString}</title>
 </Head>
 
 <Intro />
 
 ---
 
-# Bullets
+# Roteiro
 
-## Markdown tradicional
-
-- Primeiro
-- Segundo 
-
----
-
-# Bullets
-
-## HTML tags
-
-<ul>
-  <li>Terceiro</li>
-  <li>Quarto</li>
-</ul>
+- Por quê?
+- Estratégia de detecção de deriva
+- Gramática Java e autômato de pilha
+- Toque em gramática enum Dart
+- Conclusão
 
 ---
 
-# Podemos por svg
+# Era uma vez...
 
-![Literals](./img/literals.svg)
+Uma enum Java
 
----
-
-# Bullets aparecendo
-
-<ul>
-  <Appear>
-    <li>Só HTML like</li>
-    <li>`tentando md`</li>
-    <li>
-      <code>null</code>
-    </li>
-  </Appear>
-</ul>
+<Appear>
+<p>ela era inocente</p>
+<p>e boa</p>
+<p>funcionava para Java Web e GWT</p>
+</Appear>
 
 ---
 
-# Code examples
+# Era uma vez...
+
+Uma enum Java
+
+<Appear>
+<p>e começou o processo de migrar o mobile...</p>
+<p>vamos para Flutter...</p>
+<p>e a mesma enum precisou aparecer em Flutter</p>
+<p>... em código Dart...</p>
+</Appear>
+
+---
+
+# Code drift
+
+![Duas pessoas em um caiaque a deriva](https://media.tenor.com/vBMY_Y5-tkwAAAAd/kayaking-fail.gif)
+
+---
+
+# Code drift
+
+- Duas bases de código?
+- Um código vai prum lado, outro pro outro
+- Enums que deveriam ser acopladas?
+  - Evolução independente 🤪
+
+---
+
+# Evitar deriva
+
+- Single source of truth
+- QUEBRAR SE DERIVAR!!!!
+
+---
+
+# Single source of truth
+
+- Geração de código
+
+![SEM TEMPO IRMÃO](https://media.tenor.com/sUbHakwftcYAAAAC/no-time-busy.gif)
+
+---
+
+# Single source of truth
+
+- De java obter dart?
+- De dart obter java?
+- DSL neutra e gerar source java+dart?
+- E meus métodos Java?
+- Como configurar no lifecycle?
+
+---
+
+# Quebrar se derivar
+
+- Meu gitlab-ci job sanity (apenas bash)
+- Ler as enums do Java
+- Ler as enums do Dart
+- Detectar mudanças
+
+![se tiver enumerados no lado dart não contemplados pelo lado java](./img/set-diff.png)
+
+---
+
+# Como detectar?
+
+![se tiver enumerados no lado dart não contemplados pelo lado java](./img/set-diff.png)
+
+...
+
+![enumerados dart subconjunto enumerados java](./img/subseteq.png)
+
+---
+
+# Como detectar?
+
+- todo elemento de enum_dart contido em enum_java
+- strings
+- se já tiver vetores de strings? loopar
 
 ---
 
 <Code
-  title="Naturals"
-  code={require('!raw-loader!./code/naturals.ts')}
+  title="Pertence, aleatório"
+  code={require('!raw-loader!./code/in-random.sh')}
   showNumbers={false}
   dark={true}
-  lang="ts"
+  lang="bash"
   steps={[
-    { range: [1, 3], notes: 'Nat definition' },
-    { range: [5, 12], notes: 'Add' },
-    { range: [14, 21], notes: 'Sub' },
-    { range: [23, 28], notes: 'Mult' },
-    { range: [30, 46], notes: 'Div' },
+    { range: [3, 3], notes: 'Enumeração conhecida' },
+    { range: [7, 10], notes: 'Detecção de igualdade' },
+    { range: [12, 14], notes: 'Não achou? Aborta!' },
+  ]}
+/>
+
+---
+
+# Como detectar?
+
+- Subótimo
+- ~100 itens
+- Ordenar Java -> detecção precoce
+- Ordenar Dart -> detecção precoce
+  - Precisa iterar de modo esperto
+  - Tá bom só ordenar Java
+
+---
+
+<Code
+  title="Pertence, ordenado"
+  code={require('!raw-loader!./code/in-sorted.sh')}
+  showNumbers={false}
+  dark={true}
+  lang="bash"
+  steps={[
+    { range: [3, 3], notes: 'Enumeração já ordenada' },
+    { range: [7, 9], notes: 'Detecção de igualdade' },
+    { range: [10, 12], notes: 'Já passou do java, não tem mais utilidade' },
+  ]}
+/>
+---
+
+<Code
+  title="Similar produção"
+  code={require('!raw-loader!./code/prod-like-subset.sh')}
+  showNumbers={false}
+  dark={true}
+  lang="bash"
+  steps={[
+    { range: [1, 1], notes: 'Extração e ordenação enum java' },
+    { range: [5, 6], notes: 'Extração, iteração e inicialização laço enum dart' },
+    { range: [8, 10], notes: 'Detecção de igualdade' },
+    { range: [11, 13], notes: 'Já passou do java, não tem mais utilidade' },
+    { range: [15, 17], notes: 'Não achou um item dart? Aborta!' },
+    { range: [5, 18], notes: 'Sobreviveu laço dart todinho sem abortar? Deu bom' },
+  ]}
+/>
+
+---
+
+# Convenções úteis
+
+- apenas um elemento Java top level
+- compila (_well formed_)
+  - java 8
+- apenas enum no arquivo Dart
+- arquivos acoplados anti-deriva?
+  - em pares _SEMPRE_ \<java:dart\>
+
+---
+
+# Cadê Java?
+
+- Cenário real:
+  - enum elemento top level
+  - métodos sobrecarregados por enum
+  - comentários
+  - anotações em métodos
+  - anotações em enums
+  - métodos com strings
+  - vários itens mesma linha
+  - construtor
+
+---
+
+<Code
+  title="Enumeração simples"
+  code={require('!raw-loader!./code/enum/Day-1.java')}
+  showNumbers={false}
+  dark={true}
+  lang="java"
+  steps={[
+    { range: [4, 5], notes: 'Os itens' },
+  ]}
+/>
+
+---
+
+Output?
+
+- SUNDAY
+- MONDAY
+- TUESDAY
+- WEDNESDAY
+- THURSDAY
+- FRIDAY
+- SATURDAY
+
+---
+
+# Gramática Java?
+
+- Comentários de linha `//`
+- Comentários de bloco `/* */`
+- Comentários selvagens aparecem
+
+---
+
+<JavaGram
+  steps={[
+    { range: [1, 1], notes: 'Estrutura geral' },
+    { range: [9, 10], notes: 'Elementos == Elemento Kleene star' },
+    { range: [11, 14], notes: 'Possibilidade elemento' },
+    { range: [26, 28], notes: 'Visão geral enumeração' },
+  ]}
+/>
+
+---
+
+# Heurísticas meu caso
+
+- só vai passar enum
+  - diferenciar classe/interface/etc?
+- "primeiro" `{`?
+  - começar extrais enums
+- "primeiro" `;`?
+  - EOE
+- `}` fechando o "primeiro" `{`?
+  - acabou mesmo aquivo java 🤷‍♂️
+
+---
+
+<JavaGram
+  title="Heurística do { funciona?"
+  steps={[
+    { range: [1, 1], notes: 'Preâmbulo + elemento' },
+    { range: [2, 8], notes: 'Preâmbulo = pacote + imports' },
+  ]}
+/>
+
+---
+
+<JavaGram
+  title="Heurística do ; funciona?"
+  steps={[
+    { range: [26, 28], notes: 'Lista vs vísceras' },
+    { range: [29, 31], notes: 'Enumerados' },
+    { range: [32, 32], notes: 'Elemento enumerado' },
+    { range: [38, 39], notes: 'Ao redor do elemento' },
+  ]}
+/>
+
+---
+
+# Ao redor do elemento
+
+- subclasse
+  - contido `{` entre chaves `}`
+- construtor
+  - contido `(` entre parênteses `)`
+
+---
+
+# Construindo autômato
+
+- DFA por padrão
+- situações de pilha
+  - \+@ empilha símbolo `@`
+  - /@ remove símbolo `@`
+- #eventos de escrita
+  - #ID: char da enum
+  - #FIM: quebra linha (se #ID antes)
+- EOE: end of enum
+
+<!--
+  @ -> placeholder para símbolo
+
+  só escrever na mesma linha vai ser identificado como o mesmo elemento pelo bash
+  escrever em linhas distintas permite diferenciar saída e posso dar sort
+ -->
+
+---
+
+<JavaPDA
+  steps={[
+    { range: [6, 11], notes: 'Qualquer coisa quebra ID' },
   ]}
 />
 
 ---
 
 <Code
-  title="T function options"
-  code={require('!raw-loader!./code/templateOptions.ts')}
+  title="Enumeração simples"
+  code={require('!raw-loader!./code/enum/Day-1.java')}
   showNumbers={false}
   dark={true}
-  lang="ts"
-/>
-
----
-
-<Code
-  title="Naturals"
-  code={require('!raw-loader!./code/naturals.ts')}
-  showNumbers={false}
-  dark={true}
-  lang="ts"
+  lang="java"
   steps={[
-    { range: [1, 3], notes: 'Nat definition' },
-    { range: [5, 12], notes: 'Add' },
-    { range: [14, 21], notes: 'Sub' },
-    { range: [23, 28], notes: 'Mult' },
-    { range: [30, 46], notes: 'Div' },
+    { range: [4, 5], notes: 'Os itens' },
   ]}
 />
 
 ---
 
-# Live links
+<Code
+  title="Enumeração com construtor e campo"
+  code={require('!raw-loader!./code/enum/Day-2.java')}
+  showNumbers={false}
+  dark={true}
+  lang="java"
+  steps={[
+    { range: [4, 5], notes: 'Os itens' },
+  ]}
+/>
 
-- https://www.typescriptlang.org/docs/handbook/2/generics.html
-- https://www.typescriptlang.org/docs/handbook/2/conditional-types.html
-- https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html
-- https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#intersection-types
+---
+
+# Complicando: comentários
+
+---
+
+<Code
+  title="Enumeração comentada"
+  code={require('!raw-loader!./code/enum/Day-3.java')}
+  showNumbers={false}
+  dark={true}
+  lang="java"
+  steps={[
+    { range: [13, 15], notes: 'Os itens' },
+    { range: [1, 10], notes: 'Muitos comentários' },
+  ]}
+/>
+
+---
+
+<JavaPDA
+  steps={[
+    { range: [26, 32], notes: 'Comentários de linha' },
+    { range: [33, 38], notes: 'Comentários de bloco' },
+    { range: [39, 40], notes: 'Não comentário' },
+  ]}
+/>
+
+---
+
+# E como tá em bash?
+
+- tratar tokens especiais
+  - tokens de retorno estado anterior
+- não precisa estar dentro do DFA
+
+---
+
+<Code
+  title="Enumeração comentada"
+  code={require('!raw-loader!./code/dfa-comment.sh')}
+  showNumbers={false}
+  dark={true}
+  lang="bash"
+  steps={[
+    { range: [31, 31], notes: 'Decisão char a char' },
+    { range: [32, 37], notes: 'Grosso DFA, estado INICIAL' },
+    { range: [38, 50], notes: 'Grosso DFA, estado POSSIVEIS_ENUM' },
+    { range: [51, 53], notes: 'Grosso DFA, estado EOE' },
+    { range: [55, 67], notes: 'Identificando comentário' },
+    { range: [3, 11], notes: 'Comentário de linha' },
+    { range: [13, 26], notes: 'Comentário de bloco' },
+  ]}
+/>
+
+---
+
+# Subclasse
+
+- `@Override` e outras brincadeiras
+- abre com `{`
+- fecha com `}` equivalente
+  - pilha de `{`
+  - desempilhado por `}`
+
+---
+
+<JavaGram
+  steps={[
+    { range: [32, 32], notes: 'Posição para "subclassear"' },
+    { range: [33, 37], notes: 'O que pode conter (exceto ctor)' },
+  ]}
+/>
+
+---
+
+# O que é um método?
+
+- acesso (private, public, etc)
+- static? strictfp? final?
+- generics
+- retorno
+- nome
+- args entre `(` parênteses `)`
+- `{` CÓDIGO `}`
+
+---
+
+# Código
+
+- auto-aninhado
+- estrutura de controle `{` CÓDIGO `}`
+
+---
+
+# Heurísticas meu caso
+
+compila, portanto...
+
+- pilha começa com `{E`
+- a cada `{` sintático, empilhar `{`
+- a cada `}` sintático, remover `{` ou `{E` da pilha
+- removeu `{E` => pilha vazia => fim do método
+
+---
+
+# E chamada de construtor?
+
+```java
+THURSDAY(5), FRIDAY(6) {
+
+  @Override
+  public String toString() {
+    return "SEXTOOOOU!";
+  }
+}
+```
+---
+
+# chamada passando args?
+
+- elemento parametrizável
+  - nome de função, ctor, anotação
+- `(` argumentos separados por vírgulas `)`
+- arg: pode ser instância de classe anônima
+
+---
+
+# Heurísticas meu caso
+
+compila, portanto...
+
+- pilha começa com `(E`
+- a cada `(` sintático, empilhar `(`
+- a cada `)` sintático, remover `(` ou `(E` da pilha
+- removeu `(E` => pilha vazia => fim dos argumentos
+
+---
+
+# Abstraindo PDA
+
+PDA: caracter PUSH vs caracter POP
+
+- pilha começa com PUSH-E
+- a cada PUSH sintático, empilhar PUSH
+- a cada POP sintático, remover PUSH ou PUSH-E da pilha
+- removeu PUSH-E => pilha vazia => fim da seção PDA
+
+---
+
+# Argumentos? E strings?
+
+- Java 8
+- `"([^\\\\"]|\\\\.)*"`
+  - começa com `"`
+  - se não for `"` ou `\\`, parte da string
+  - se for `\\`, `\\` e o próximo pertencem a string
+  - termina com `"`
+
+---
+
+# E chars?
+
+- Heurística: caso especial de string
+- Estou assumindo que compila...
+
+---
+
+<JavaPDA
+  steps={[
+    { range: [55, 58], notes: '"PDA" para bloco de código' },
+    { range: [60, 63], notes: '"PDA" para construtor + args' },
+    { range: [65, 78], notes: 'Strings...' },
+    { range: [80, 83], notes: 'Outros chars não especiais para meus PDA' },
+  ]}
+/>
+
+---
+
+# E anotações?
+
+- dentro de subclasse/ctor
+  - já tratada
+- anotando a enum como um todo
+  - complexidade equiv de bloco de construtor
+  - inicial => ( ctor +"inicial"
+- anotando item da enum
+  - ignorar string depois do arroba
+
+---
+
+<JavaPDA
+  steps={[
+    { range: [98, 103], notes: 'Complexidades adicionais annotation' },
+  ]}
+/>
+
+---
+
+<Code
+  title="Enumeração completa"
+  code={require('!raw-loader!./code/dfa-completo.sh')}
+  showNumbers={false}
+  dark={true}
+  lang="bash"
+  steps={[
+    { range: [89, 89], notes: 'Decisão char a char' },
+    { range: [91, 97], notes: 'Inicial + complexidade annotation' },
+    { range: [112, 114], notes: 'Anotando item da enum' },
+    { range: [117, 130], notes: 'Lidando com annotation' },
+    { range: [28, 39], notes: 'Lendo string' },
+    { range: [41, 48], notes: 'PDA, parâmetro PUSH POP (OPEN/CLOSE)' },
+    { range: [49, 52], notes: 'Empilha' },
+    { range: [52, 59], notes: 'Desempilha' },
+    { range: [54, 56], notes: 'Fim da pilha, voltando a DFA' },
+    { range: [60, 67], notes: 'Detectando comentário' },
+    { range: [71, 76], notes: 'Comentário de bloco' },
+    { range: [77, 79], notes: 'Limpa deteção de comentário parcial' },
+    { range: [68, 70], notes: 'Lidando com string' },
+  ]}
+/>
+
+---
+
+# E enumeração dart?
+
+- "caso especial" da enum Java
+- considerando todas as Heurísticas
+  - compila
+  - elemento único no arquivo
+
+---
+
+<Code
+  title="Enumeração em dart"
+  code={require('!raw-loader!./code/enum/day.dart')}
+  showNumbers={false}
+  dark={true}
+  lang="dart"
+/>
+
+---
+
+<Code
+  title="Esquema aproximado da enum de dart"
+  code={require('!raw-loader!./code/dart-enum.bnf')}
+  showNumbers={false}
+  dark={true}
+  lang="dart"
+/>
+
+---
+
+# Conclusão
+
+- Code drift de enums 😤
+  - Source generation
+  - Acoplamento
+- Acoplar, com runtime 😁
+- Acoplar, sem runtime...
+  - Possível 🙄
+
+---
+
+# Conclusão
+
+- Conheça a lang
+- Heurísticas facilitam
+  - eg: compila/código válido
+- Prepare-se para overengineering
+- Diverta-se com gramática e autômato
 
 ---
 

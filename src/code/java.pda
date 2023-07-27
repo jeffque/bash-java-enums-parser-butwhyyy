@@ -1,0 +1,117 @@
+
+
+
+
+
+inicial ==> `{` possíveis-enums
+inicial ==> . inicial
+possíveis-enums ==> [A-Za-z0-9_] possíveis-enums  #ID
+possíveis-enums ==> `;` EOE                       #FIM
+possíveis-enums ==> `}` EOE                       #FIM
+possíveis-enums ==> . possíveis-enums             #FIM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+inicial ==> `/` barra +"inicial"
+possíveis-enums ==> `/` barra +"possíveis-enums"  #FIM
+barra ==> `/` comentário-linha
+comentário-linha /"inicial" ==> `\r` inicial
+comentário-linha /"inicial" ==> `\n` inicial
+comentário-linha /"possíveis-enums" ==> `\r` possíveis-enums
+comentário-linha /"possíveis-enums" ==> `\n` possíveis-enums
+barra ==> `*` comentário-bloco
+comentário-bloco ==> `*` comentário-bloco-star
+comentário-bloco-star /"inicial" ==> `/` inicial
+comentário-bloco-star /"possíveis-enums" ==> `/` possíveis-enums
+comentário-bloco-star ==> `*` comentário-bloco-star
+comentário-bloco-star ==> . comentário-bloco
+barra /"inicial" ==> . inicial
+barra /"possíveis-enums" ==> . possíveis-enums
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+possíveis-enums ==> `{` subclasse +"{E"  #FIM
+subclasse ==> `{` subclasse +"{"
+subclasse /"{" ==> `}` subclasse 
+subclasse /"{E" ==> `}` possíveis-enums
+
+possíveis-enums ==> `(` ctor +"(E"       #FIM
+ctor ==> `(` ctor +"("
+ctor /"(" ==> `)` ctor
+ctor /"(E" ==> `)` possíveis-enums
+
+subclasse ==> `"` string-aspas +"subclasse"
+subclasse ==> `'` string-apostrof +"subclasse"
+string-aspas /"subclasse" ==> `"` subclasse
+string-apostrof /"subclasse" ==> `'` subclasse
+
+ctor ==> `"` string-aspas +"ctor"
+ctor ==> `'` string-apostrof +"ctor"
+string-aspas /"ctor" ==> `"` ctor
+string-apostrof /"ctor" ==> `'` ctor
+
+string-aspas ==> `\` string-aspas-escape
+string-aspas-escape ==> . string-aspas
+string-apostrof ==> `\` string-apostrof-escape
+string-apostrof-escape ==> . string-apostrof
+
+subclasse ==> . subclasse
+ctor ==> . ctor
+string-aspas ==> . string-aspas
+string-apostrof ==> . string-apostrof
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+inicial ==> `(` ctor +"(I"
+ctor /"(I" ==> `)` inicial
+possíveis-enums ==> `@` annotation             #FIM
+annotation ==> [A-Za-z0-9_] annotation
+annotation ==> `@` annotation
+annotation ==> `(` ctor +"(E"
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+arq-java ==> preâmbulo elemento elementos
+preâmbulo ==> pacote? imports
+imports ==>
+imports ==> import imports
+import ==> <<import>> classe
+import ==> <<import>> wildcard
+import ==> <<import static>> classe
+import ==> <<import static>> wildcard
+elementos ==>
+elementos ==> elemento elementos
+elemento ==> modificador-acesso id-interface nome super-interface corpo-interface
+elemento ==> modificador-acesso id-anotação nome super-anotação corpo-anotação
+elemento ==> modificador-acesso id-classe nome super-classe corpo-classe
+elemento ==> modificador-acesso id-enumeração nome super-enumeração corpo-enumeração
+modificador-acesso ==> <<public>>
+modificador-acesso ==> <<protected>>
+modificador-acesso ==> <<private>>
+modificador-acesso ==>
+id-interface ==> <<interface>>
+id-anotação ==> <<@interface>>
+id-classe ==> <<class>>
+id-enumeração ==> <<enum>>
+corpo-interface ==> <<{>> vísceras-interface <<}>>
+corpo-anotação ==> <<{>> vísceras-anotação <<}>>
+corpo-classe ==> <<{>> vísceras-classe <<}>>
+corpo-enumeração ==> <<{>> vísceras-enumeração <<}>>
+vísceras-enumeração ==> lista-enumerada
+vísceras-enumeração ==> lista-enumerada <<;>> vísceras-classe
+lista-enumerada ==> elemento-enumeração <<,>> lista-enumerada
+lista-enumerada ==> elemento-enumeração
+lista-enumerada ==>
+elemento-enumeração ==> nome args-construtor? subclasse?
+elemento-interno ==> campo
+elemento-interno ==> método
+elemento-interno ==> construtor
+elemento-interno ==> bloco-código
+elemento-interno ==> bloco-código-estático
+args-construtor ==> <<(>> args <<)>>
+subclasse ==> <<{>> vísceras-classe <<}>>

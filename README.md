@@ -1,10 +1,22 @@
-This is a template based on https://github.com/fersilva16/type-level-typescript-talk/. Go ahead and give @fersilva16 a star if you like this one.
+# Um parser em bash que identifica enums de um fonte Java
 
-# Introduction to Type-Level programming in TypeScript
+Era uma vez, um código Java, uma enumeração inocente. Ele funcionava
+em Java Web, e GWT, e se viu que ele era bom.
 
-Original slides that originated this template! Please, check bellow :point_down:
+Então, a direção da empresa resolveu fazer a versão mobile em Flutter
+e essa enumeração precisava existir em código Dart também. E se viu
+que isso era ruim.
 
-Slides: <https://fersilva16.github.io/type-level-typescript-talk>
+Das estratégias possíveis para evitar deriva de código, foi escolhida
+a de checar (em tempo de CI, com scripts passíveis de rodar manualmente)
+se as enumerações estavam condizentes.
+
+Esta é a minha jornada para fazer o identificador de enumerações em Java
+e verificar se estava coerente com o que existia em Dart.
+
+Esta é a versão de apresentação [deste meu
+artigo](https://computaria.gitlab.io/blog/2022/03/20/bash-java-enum-parser),
+com direito a expansão em como foi feita a checagem de subconjunto
 
 # How to Run
 

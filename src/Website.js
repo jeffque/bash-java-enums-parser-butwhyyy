@@ -1,21 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import Link from './Link';
-
-const Img = styled.img`
-  width: 400px;
-  border: 6px solid #fff;
-  border-radius: 20px;
-`;
 
 const Website = () => {
   return (
     <>
-      <h1>Website</h1>
-      <Img src="./img/website-qrcode.png" />
-      <Link href="https://fersilva.dev" target="_blank">
-        <h2>fersilva.dev</h2>
-      </Link>
+      <h1>obrigado</h1>
+      <h2>blog: <Link href="https://computaria.gitlab.io/blog/" target="_blank">https://computaria.gitlab.io/blog/</Link></h2>
+      <h2>source: <Link href="https://github.com/jeffque/bash-java-enums-parser-butwhyyy" target="_blank">https://github.com/jeffque/bash-java-enums-parser-butwhyyy</Link></h2>
+      <h2>talk: <Link href="https://jeffque.github.io/bash-java-enums-parser-butwhyyy/" target="_blank">https://jeffque.github.io/bash-java-enums-parser-butwhyyy/</Link></h2>
     </>
   );
 };

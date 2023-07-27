@@ -1,0 +1,6 @@
+enum ==> id-enumeração nome corpo-enumeração
+id-enumeração ==> <<enum>>
+corpo-enumeração ==> `{` lista-enumerada `}`
+lista-enumerada ==> elemento-enumeração <<,>> lista-enumerada
+lista-enumerada ==> elemento-enumeração
+elemento-enumeração ==> nome
